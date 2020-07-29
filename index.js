@@ -91,8 +91,12 @@ client.on("message", message => {
 		// Handle commands
 		////////////////////////////////////////////
 		
-		const permittedRoles = db.getData("/" + message.guild.id + "/permitteds/");
-		const isAdmin = permittedRoles.indexOf(message.author.id);
+		const permittedRoles = db.getData("/" + message.guild.id + "/permitteds/"); console.log(permittedRoles);
+		var isAdmin = false;
+		permittedRoles.forEach( (el) => {
+			if(isAdmin) return;
+			if(message.member.roles.cache.has(el)) isAdmin = true;
+		});
 		
 		if(isOwner || isAdmin) {
 			try { client.commands[cmd].command(client, message, args, db); }
